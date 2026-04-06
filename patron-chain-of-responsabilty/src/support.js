@@ -2,13 +2,19 @@ const Handle = require("./handle");
 
 class BasicSupport extends Handle {
   handle(request) {
-    if(request.type === "unknown") {
-      console.log("Basic Support: Request cannot be handled cause it's of an unknown type.");
-    } else if (request.type === "basic") {
-      console.log("Basic Support: Handling request.");
-    } else {
-      console.log("Basic Support: Passing request to the next handler...");
-      super.handle(request);
+    switch (request.type) {
+      case "unknown":
+        console.log(
+          "Basic Support: Request cannot be handled cause it's of an unknown type."
+        );
+        break;
+      case "basic":
+        console.log("Basic Support: Handling request.");
+        break;
+      default: {
+        console.log("Basic Support: Passing request to the next handler...");
+        super.handle(request);
+      }
     }
   }
 }
