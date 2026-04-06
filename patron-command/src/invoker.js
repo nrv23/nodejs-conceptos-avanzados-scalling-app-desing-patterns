@@ -8,6 +8,7 @@ class Invoker {
     console.log(`Executing command: ${command.name}`);
     command.execute();
     this.trace.push(command);
+    this.undoStack = [];
   }
 
   printTrace() {

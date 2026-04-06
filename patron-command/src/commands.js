@@ -8,7 +8,11 @@ class Command {
   get name() {
     throw new Error("Method 'getName()' must be implemented.");
   }
-  
+
+  undo() {
+    console.warn(`Undo no está implementado para el comando: ${this.name}`);
+  }
+
 }
 
 class Create extends Command {
