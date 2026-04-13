@@ -1,0 +1,5 @@
+
+crear clases para estado offline y online 
+si estado es offline guarda mensajes enviados en una cola sino enviarlo directamente
+en cliente manejar un estado y cambiar el metodo de envio si el estado esta activo
+ajustar metodos de conectar y enviar mensaje segun el tipo de state class.
