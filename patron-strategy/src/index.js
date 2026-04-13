@@ -7,7 +7,7 @@ const PaymentProcessor = require("./payment-processor");
 
 const processor = new PaymentProcessor();
 
-const paymentStrategy = "paypal"; // This can be 'creditcard', 'banktransfer', etc.
+const paymentStrategy = "banktransfer"; // This can be 'creditcard', 'banktransfer', etc.
 const amountToPay = 100;
 
 switch (paymentStrategy) {
