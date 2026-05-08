@@ -1,0 +1,13 @@
+{
+  "name": "generators",
+  "version": "1.0.0",
+  "description": "Ejemplos de generadores en JavaScript",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
