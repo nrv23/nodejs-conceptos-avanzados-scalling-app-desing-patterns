@@ -30,5 +30,5 @@ export function searchRecordsInCsv(files, searchTerm) {
       }
     });
   }
-  return emitter;
+  return emitter; // al retornar el emiter entonces el metodo puede aplicar metodos de event emmiter como .on
 }
