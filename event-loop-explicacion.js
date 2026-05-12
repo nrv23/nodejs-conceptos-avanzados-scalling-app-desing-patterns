@@ -540,7 +540,7 @@ function ejemplo7_integrador() {
 
 async function main() {
   console.log('╔══════════════════════════════════════════════════════════╗');
-  console.log('║  EVENT LOOP, CALL STACK, HEAP — GUÍA CON EJEMPLOS      ║');
+  console.log('║  EVENT LOOP, CALL STACK, HEAP — GUÍA CON EJEMPLOS        ║');
   console.log('╚══════════════════════════════════════════════════════════╝');
 
   ejemplo1_callStack();

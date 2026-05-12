@@ -1,0 +1,13 @@
+diferecia entre promise, queueMicrotask, nextTick
+
+la differencia es el orden en el que se ejecutan los callbacks
+
+- nextTick: se ejecuta antes que queueMicrotask y promise.resolve
+- queueMicrotask: se ejecuta antes que promise.resolve
+- promise.resolve: se ejecuta antes que setTimeout
+
+
+Cuando usar un promise y cuando un queueMicrotask:
+
+- usar promise cuando el callback se ejecuta de forma asincrona
+- usar queueMicrotask cuando el callback se ejecuta de forma sincrona
