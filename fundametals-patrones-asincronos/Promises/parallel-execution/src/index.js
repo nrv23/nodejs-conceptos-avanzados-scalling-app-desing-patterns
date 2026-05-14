@@ -14,7 +14,7 @@ Promise.race([wait(4), wait(5), wait(8), wait(1)])
   .then(console.log);
 // ejecuta todas las promesas al mismo tiempo pero si una falla se termina el proceso.
 Promise.all([writeFile("test1.txt", "1"), writeFile("test2.txt", "2"), writeFile("test3.txt", "3")])
-  .then(() => readdir(__dirname))
+  .then(() => readdir(__dirname, { encoding: 'utf-8' }))
   .then(console.log);
 
 
