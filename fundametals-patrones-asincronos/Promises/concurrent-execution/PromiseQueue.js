@@ -24,24 +24,18 @@ class PromiseQueue {
 
             currentPromise
                 .then(() => {
-
                     console.log(
                         "Promesa completada"
                     );
-
                     this.done.push(currentPromise);
-
                 })
                 .catch(console.error)
-
                 .finally(() => {
-
                     // remover promesa terminada
                     this.running =
                         this.running.filter(
                             p => p !== currentPromise
                         );
-
                     // intentar ejecutar siguiente
                     this.run();
                 });
