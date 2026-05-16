@@ -1,0 +1,143 @@
+## node --trace_gc
+
+Comando de Node.js que muestra en consola la actividad del:
+
+Garbage Collector (GC)
+
+del motor V8.
+
+--------------------------------------------------
+
+¿QUÉ HACE?
+
+Permite observar:
+
+- cuándo se ejecuta el GC
+- cuánta memoria se libera
+- cuánto heap se está usando
+- tipos de recolección de basura
+- comportamiento de memoria de la aplicación
+
+--------------------------------------------------
+
+SINTAXIS
+
+node --trace_gc app.js
+
+--------------------------------------------------
+
+¿QUÉ MUESTRA?
+
+Ejemplo de salida:
+
+[12345:000001A]  120 ms: Scavenge 4.5 (5.2) -> 3.9 (5.7) MB
+
+--------------------------------------------------
+
+SIGNIFICADO
+
+- 120 ms:
+  tiempo desde que inició el proceso
+
+- Scavenge:
+  tipo de GC ejecutado
+
+- 4.5 -> 3.9 MB:
+  memoria usada antes y después
+
+- (5.2) -> (5.7):
+  tamaño total del heap
+
+--------------------------------------------------
+
+TIPOS COMUNES DE GC
+
+- Scavenge:
+  limpieza rápida de objetos pequeños/jóvenes
+
+- Mark-sweep:
+  limpieza más profunda del heap
+
+- Mark-compact:
+  compacta memoria para reducir fragmentación
+
+--------------------------------------------------
+
+¿PARA QUÉ SIRVE?
+
+1. Detectar memory leaks
+
+Si la memoria sube constantemente y el GC no logra liberarla,
+puede existir una fuga de memoria.
+
+--------------------------------------------------
+
+2. Analizar uso de memoria
+
+Permite entender:
+
+- presión del heap
+- frecuencia del GC
+- impacto de objetos grandes
+- consumo RAM
+
+--------------------------------------------------
+
+3. Comparar rendimiento
+
+Muy útil para comparar:
+
+❌ procesamiento completo en memoria
+
+vs
+
+✅ streams/chunks
+
+--------------------------------------------------
+
+EJEMPLO PRÁCTICO
+
+Sin streams:
+
+fs.readFile("bigfile.txt", ...)
+
+Carga todo el archivo en memoria.
+
+Puede generar:
+
+- heap alto
+- GC frecuente
+- pausas
+
+--------------------------------------------------
+
+Con streams:
+
+fs.createReadStream("bigfile.txt")
+
+Procesa por partes.
+
+Genera:
+
+- menos uso de memoria
+- menos GC
+- mejor rendimiento
+
+--------------------------------------------------
+
+FLAGS RELACIONADOS
+
+--trace_gc_verbose
+Logs más detallados del GC.
+
+--inspect
+Permite debugging y heap snapshots.
+
+--max-old-space-size
+Define el límite máximo del heap.
+
+--------------------------------------------------
+
+RESUMEN
+
+--trace_gc permite monitorear cómo V8 maneja y libera memoria durante la ejecución de una aplicación Node.js.
