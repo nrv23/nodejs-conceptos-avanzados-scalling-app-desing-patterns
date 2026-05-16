@@ -14,3 +14,10 @@ Cuando usar un promise y cuando un queueMicrotask:
 
 El emmiter por cada reques tiene sus propia instancia de emmiter, sus propios eventos y su propio finish para no 
 mezclarlo con otras o usarlo globalmente, asi se evitan problemas de memory leaks o errores en los eventos
+
+streams:
+
+metodos:
+resume: flujo automático
+read: consumo manual/controlado
+pause: pusar el consumo de chunks
