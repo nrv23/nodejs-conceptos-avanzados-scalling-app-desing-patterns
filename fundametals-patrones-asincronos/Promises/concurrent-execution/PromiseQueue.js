@@ -19,7 +19,8 @@ class PromiseQueue {
 
         while (this.#getNewtask) {
 
-            const currentPromise = this.toDo.shift(); // se elimina la ultima tarea insertada en las pendientes.
+            const taskFactory = this.toDo.shift(); // se elimina la ultima tarea insertada en las pendientes.
+            const currentPromise = taskFactory(); 
             this.running.push(currentPromise);
 
             currentPromise
