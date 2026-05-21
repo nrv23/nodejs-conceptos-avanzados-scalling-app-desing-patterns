@@ -48,7 +48,7 @@ readStream.on("readable", () => {
 readStream.on("end", () => console.log("\nstream ended"));
 readStream.on("error", error => console.log("error was occurred reading stream.. ", error));
 
-process.stdin.on("data", input => {
+process.stdin.on("data", input => { //lee datos del terminal
     const command = input.toString().trim();
     console.log("echo:  ", command);
 
