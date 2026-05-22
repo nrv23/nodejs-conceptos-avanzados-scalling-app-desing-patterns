@@ -17,6 +17,10 @@ class TransformStream extends Transform {
         callback();
 
     }
+    _flush(callback) {
+        console.log("mas datos seran pasados...");
+        callback();
+    }
 
     _final(callback) {
         this.push(null);

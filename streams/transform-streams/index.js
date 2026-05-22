@@ -21,6 +21,8 @@ report.on("data", chunk => {
 readStream.pipe(throttle)
     .pipe(report)
     .pipe(transformStream)
+    //.pipe(process.stdout) // muestra en consola
     .pipe(writableStream);
+
 
 writableStream.on("finish", () => console.log("Stream finalizado"));
