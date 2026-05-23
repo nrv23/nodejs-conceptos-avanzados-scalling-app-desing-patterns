@@ -1,0 +1,2194 @@
+------WebKitFormBoundaryeBivEfLIENkM3Rq2
+Content-Disposition: form-data; name="upload-file"; filename="messenger_architecture_full.md"
+Content-Type: text/markdown
+
+# PARTE 1 — VISIÓN GENERAL + FRONTEND + FILOSOFÍA DEL PROYECTO
+
+# Messenger Realtime Enterprise Platform
+
+Versión: 1.0
+Arquitectura: Microservicios + Event Driven + Realtime
+Inspiración: MSN Messenger + WhatsApp + Discord
+
+---
+
+# 1. OBJETIVO DEL PROYECTO
+
+Construir una aplicación de mensajería realtime moderna inspirada visualmente en MSN Messenger clásica pero utilizando arquitectura distribuida moderna.
+
+El proyecto tendrá como objetivo principal servir como plataforma de aprendizaje y laboratorio para practicar:
+
+- Node.js Internals
+- PostgreSQL avanzado
+- Redis
+- RabbitMQ
+- Docker
+- Kubernetes
+- WebSockets
+- WebRTC
+- Sistemas distribuidos
+- Arquitectura enterprise
+- Event Driven Architecture
+- Escalabilidad horizontal
+- Fault tolerance
+- Realtime systems
+- Delivery guarantees
+- Resiliencia
+
+Este proyecto NO será un CRUD.
+
+La idea es simular problemas reales de sistemas distribuidos.
+
+Ejemplos:
+
+- mensajes no entregados
+- retries automáticos
+- presencia distribuida
+- sockets sincronizados
+- llamadas P2P
+- recuperación de fallos
+- delivery guarantees
+- sincronización entre nodos
+
+---
+
+# 2. FILOSOFÍA DEL PROYECTO
+
+## Filosofía General
+
+El sistema será diseñado pensando primero en:
+
+1. Simplicidad operativa
+2. Escalabilidad
+3. Performance
+4. Mantenibilidad
+5. Realtime
+6. Resiliencia
+
+NO buscamos:
+
+- usar tecnologías por moda
+- hacer sobreingeniería
+- agregar complejidad innecesaria
+
+Buscamos:
+
+- entender internals
+- diseñar sistemas reales
+- tomar decisiones justificadas
+
+---
+
+## Filosofía Backend
+
+NO se utilizarán ORMs.
+
+Acceso a datos:
+
+- SQL manual
+- Stored Procedures
+- Functions
+- Transactions
+- Query Optimization
+
+Razones:
+
+- mayor control
+- menos overhead
+- menor uso memoria
+- mejor debugging
+- mejor tuning SQL
+- aprovechar PostgreSQL
+
+---
+
+## Filosofía Frontend
+
+El frontend NO será solo una interfaz.
+
+Será responsable de:
+
+- manejar estado realtime
+- manejar reconexiones
+- sincronizar UI
+- manejar optimistic updates
+- recuperar estado
+- controlar llamadas
+
+---
+
+# 3. STACK TECNOLÓGICO
+
+## FRONTEND
+
+React
+TypeScript
+Vite
+Zustand
+React Router
+Socket.IO Client
+Axios
+TailwindCSS
+WebRTC APIs
+
+---
+
+## BACKEND
+
+Node.js
+Express
+TypeScript
+Socket.IO
+PostgreSQL
+pg Driver
+Redis
+RabbitMQ
+MinIO
+Docker
+Kubernetes
+
+---
+
+## INFRAESTRUCTURA
+
+Docker
+Docker Compose
+Minikube
+kubectl
+Kubernetes
+
+---
+
+# 4. FRONTEND — ARQUITECTURA COMPLETA
+
+El frontend tendrá responsabilidad MUCHO más allá de renderizar.
+
+Objetivos:
+
+- experiencia realtime
+- resiliencia
+- recuperación automática
+- UI fluida
+
+---
+
+# 5. TECNOLOGÍAS FRONTEND
+
+## React
+
+Responsabilidad:
+
+- UI
+- componentes
+- rendering
+- composición
+
+Por qué React:
+
+- flexible
+- realtime friendly
+- gran ecosistema
+- fácil integración sockets
+
+---
+
+## TypeScript
+
+Responsabilidad:
+
+- contratos
+- DTOs
+- type safety
+
+Objetivos:
+
+- reducir bugs
+- facilitar refactors
+
+---
+
+## Vite
+
+Responsabilidad:
+
+- desarrollo rápido
+- builds
+
+Objetivos:
+
+- hot reload
+- compilación rápida
+
+---
+
+## Zustand
+
+Responsabilidad:
+
+estado global.
+
+Stores planeados:
+
+authStore
+socketStore
+conversationStore
+messageStore
+presenceStore
+notificationStore
+callStore
+
+Ejemplo:
+
+authStore
+
+Responsable:
+
+- sesión
+- usuario actual
+- refresh
+
+messageStore
+
+Responsable:
+
+- mensajes
+- estado entrega
+- sync
+
+callStore
+
+Responsable:
+
+- llamadas
+- audio
+- video
+
+---
+
+## Socket.IO Client
+
+Responsabilidad:
+
+- realtime
+- reconexión
+- heartbeats
+
+Eventos:
+
+MESSAGE_SENT
+MESSAGE_DELIVERED
+USER_TYPING
+USER_ONLINE
+CALL_STARTED
+
+---
+
+## Axios
+
+Responsabilidad:
+
+REST APIs.
+
+Usos:
+
+login
+historial
+uploads
+configuración
+
+---
+
+## TailwindCSS
+
+Responsabilidad:
+
+UI.
+
+Objetivos:
+
+- desarrollo rápido
+- tema retro Messenger
+
+---
+
+## WebRTC
+
+Responsabilidad:
+
+voz
+video
+screen sharing
+
+---
+
+# 6. FEATURES FRONTEND
+
+## AUTENTICACIÓN
+
+Login
+
+Registro
+
+Logout
+
+Refresh token
+
+Persistencia sesión
+
+---
+
+## CONTACTOS
+
+Agregar contacto
+
+Eliminar contacto
+
+Bloquear usuario
+
+Estados
+
+---
+
+## CHATS
+
+Chat privado
+
+Chat grupal
+
+Historial
+
+Infinite scroll
+
+Mensajes pendientes
+
+Retry visual
+
+Read receipts
+
+Adjuntos
+
+Voice notes
+
+---
+
+## PRESENCE
+
+Online
+
+Offline
+
+Busy
+
+Away
+
+Typing indicators
+
+Last seen
+
+---
+
+## LLAMADAS
+
+Voice calls
+
+Video calls
+
+Screen share
+
+Mute
+
+Camera toggle
+
+Reconnect
+
+---
+
+## NOTIFICACIONES
+
+Mensajes
+
+Llamadas
+
+Sonidos
+
+Banners
+
+---
+
+# 7. ESTRUCTURA FRONTEND
+
+src/
+
+api/
+
+components/
+
+features/
+
+hooks/
+
+layouts/
+
+pages/
+
+services/
+
+sockets/
+
+store/
+
+styles/
+
+types/
+
+utils/
+
+shared/
+
+---
+
+# 8. ESTRUCTURA DETALLADA
+
+api/
+
+llamadas REST
+
+---
+
+components/
+
+componentes reutilizables
+
+---
+
+features/
+
+módulos negocio
+
+---
+
+hooks/
+
+custom hooks
+
+---
+
+services/
+
+websocket
+webrtc
+api
+
+---
+
+store/
+
+zustand
+
+---
+
+utils/
+
+helpers
+
+---
+
+# 9. UX
+
+Objetivos:
+
+UI clásica Messenger.
+
+Características:
+
+ventanas flotantes
+
+sonidos
+
+transiciones suaves
+
+reconexión transparente
+
+indicadores realtime
+
+tema clásico
+
+---
+
+# 10. METAS FRONTEND
+
+Tiempo carga bajo
+
+Reconexión automática
+
+Offline parcial
+
+Estado consistente
+
+UI reactiva
+
+Recuperación errores
+
+Escalabilidad
+
+Fin PARTE 1
+
+# PARTE 2 — BACKEND + MICROSERVICIOS + BASES DE DATOS + EVENTOS
+
+# 11. BACKEND — FILOSOFÍA GENERAL
+
+El backend será diseñado como un sistema distribuido orientado a eventos.
+
+Principios:
+
+- Clean Architecture
+- Separation of Concerns
+- Stateless Services
+- Event Driven
+- SQL First
+- Performance First
+
+Objetivos:
+
+- escalabilidad
+- desacoplamiento
+- resiliencia
+- mantenibilidad
+- observabilidad
+
+---
+
+# 12. CLEAN ARCHITECTURE
+
+Cada microservicio tendrá esta estructura.
+
+src/
+
+application/
+
+domain/
+
+infrastructure/
+
+presentation/
+
+shared/
+
+---
+
+# application
+
+Responsable:
+
+- casos de uso
+- DTOs
+- interfaces
+
+Ejemplos:
+
+SendMessageUseCase
+
+LoginUseCase
+
+CreateConversationUseCase
+
+RetryMessageUseCase
+
+---
+
+# domain
+
+Responsable:
+
+- entidades
+- reglas negocio
+- contratos
+
+Ejemplo:
+
+User
+
+Conversation
+
+Message
+
+Call
+
+---
+
+# infrastructure
+
+Responsable:
+
+- PostgreSQL
+- Redis
+- RabbitMQ
+- WebSockets
+
+---
+
+# presentation
+
+Responsable:
+
+- Controllers
+- Routes
+- Middlewares
+
+---
+
+# shared
+
+Responsable:
+
+- utilidades
+- constantes
+- errores
+
+---
+
+# 13. MICROSERVICIOS
+
+Microservicios planeados:
+
+1 API Gateway
+
+2 Auth Service
+
+3 Chat Service
+
+4 Presence Service
+
+5 Media Service
+
+6 Call Service
+
+7 Notification Service
+
+---
+
+# 14. API GATEWAY
+
+Tecnologías:
+
+Node.js
+
+Express
+
+Socket.IO
+
+JWT
+
+http-proxy
+
+---
+
+Responsabilidades:
+
+- punto entrada
+- routing
+- auth
+- rate limiting
+- websocket gateway
+
+---
+
+Features:
+
+JWT Validation
+
+Socket Validation
+
+Proxy
+
+Request Logging
+
+Error Handling
+
+Request tracing
+
+---
+
+Middlewares:
+
+Helmet
+
+Cors
+
+Logger
+
+Rate Limit
+
+Error Handler
+
+---
+
+# 15. AUTH SERVICE
+
+Tecnologías:
+
+Node.js
+
+Express
+
+PostgreSQL
+
+pg
+
+bcrypt
+
+JWT
+
+---
+
+Responsabilidades:
+
+Registro
+
+Login
+
+Logout
+
+Refresh Tokens
+
+Friendships
+
+Sessions
+
+Profiles
+
+---
+
+Features:
+
+Multi session
+
+Friend requests
+
+Block users
+
+Avatar
+
+Status message
+
+---
+
+Base Datos:
+
+Auth DB
+
+---
+
+TABLA users
+
+Campos:
+
+id UUID
+
+username VARCHAR(50)
+
+email VARCHAR(255)
+
+password_hash TEXT
+
+avatar_url TEXT
+
+status_message TEXT
+
+created_at TIMESTAMP
+
+updated_at TIMESTAMP
+
+---
+
+TABLA sessions
+
+Campos:
+
+id UUID
+
+user_id UUID
+
+refresh_token TEXT
+
+ip_address TEXT
+
+user_agent TEXT
+
+expires_at TIMESTAMP
+
+created_at TIMESTAMP
+
+---
+
+TABLA friendships
+
+Campos:
+
+id UUID
+
+requester_id UUID
+
+receiver_id UUID
+
+status VARCHAR
+
+created_at TIMESTAMP
+
+Estados:
+
+PENDING
+
+ACCEPTED
+
+BLOCKED
+
+---
+
+Stored Procedures
+
+create_user
+
+create_session
+
+accept_friendship
+
+block_user
+
+---
+
+Transacciones
+
+registro
+
+crear usuario
+
+crear sesión
+
+emitir evento
+
+---
+
+# 16. CHAT SERVICE
+
+Tecnologías:
+
+Node.js
+
+Express
+
+Socket.IO
+
+PostgreSQL
+
+RabbitMQ
+
+Redis PubSub
+
+---
+
+Responsabilidades:
+
+Conversaciones
+
+Mensajes
+
+Delivery
+
+Retry
+
+Historial
+
+Sync
+
+---
+
+Features:
+
+Chats privados
+
+Chats grupales
+
+Retry delivery
+
+Unread counters
+
+Read receipts
+
+Historial
+
+Adjuntos
+
+Edición
+
+Eliminación
+
+---
+
+Base Datos:
+
+Chat DB
+
+---
+
+TABLA conversations
+
+id UUID
+
+type VARCHAR
+
+name VARCHAR
+
+created_by UUID
+
+created_at
+
+updated_at
+
+Tipos:
+
+PRIVATE
+
+GROUP
+
+---
+
+TABLA conversation_members
+
+id UUID
+
+conversation_id
+
+user_id
+
+joined_at
+
+---
+
+TABLA messages
+
+id UUID
+
+conversation_id
+
+sender_id
+
+content
+
+message_type
+
+status
+
+created_at
+
+updated_at
+
+Tipos:
+
+TEXT
+
+IMAGE
+
+AUDIO
+
+FILE
+
+SYSTEM
+
+Estados:
+
+SENT
+
+DELIVERED
+
+READ
+
+FAILED
+
+PENDING
+
+---
+
+TABLA message_status
+
+id UUID
+
+message_id
+
+user_id
+
+status
+
+updated_at
+
+---
+
+TABLA attachments
+
+id UUID
+
+message_id
+
+file_name
+
+file_url
+
+mime_type
+
+size
+
+created_at
+
+---
+
+Stored Procedures
+
+send_message
+
+create_conversation
+
+retry_pending_messages
+
+mark_message_as_read
+
+update_unread_count
+
+create_attachment
+
+---
+
+Transacciones críticas
+
+guardar mensaje
+
+actualizar conversación
+
+actualizar unread
+
+publicar evento
+
+confirmar commit
+
+---
+
+Flujo mensaje
+
+cliente
+
+↓
+
+gateway
+
+↓
+
+chat service
+
+↓
+
+postgres
+
+↓
+
+rabbitmq
+
+↓
+
+presence
+
+↓
+
+websocket
+
+↓
+
+cliente
+
+---
+
+Eventos Chat
+
+MESSAGE_SENT
+
+MESSAGE_DELIVERED
+
+MESSAGE_READ
+
+MESSAGE_RETRY
+
+USER_TYPING
+
+---
+
+# 17. PRESENCE SERVICE
+
+Tecnologías:
+
+Redis
+
+Socket.IO
+
+Express
+
+---
+
+Responsabilidades:
+
+Presence
+
+Heartbeats
+
+Typing
+
+Tracking
+
+Reconnect
+
+---
+
+Features:
+
+Online
+
+Offline
+
+Typing
+
+Busy
+
+Away
+
+Last Seen
+
+Multi Device
+
+---
+
+Redis Keys
+
+online:user:{id}
+
+socket:user:{id}
+
+typing:conversation:{id}
+
+last_seen:user:{id}
+
+---
+
+Eventos
+
+USER_ONLINE
+
+USER_OFFLINE
+
+USER_TYPING
+
+---
+
+# 18. MEDIA SERVICE
+
+Tecnologías:
+
+Node.js
+
+Streams
+
+MinIO
+
+---
+
+Responsabilidades:
+
+Uploads
+
+Images
+
+Voice Notes
+
+Attachments
+
+Streaming
+
+---
+
+Features:
+
+Multipart Upload
+
+Chunk Upload
+
+Streaming
+
+Validation
+
+Secure URLs
+
+---
+
+Flujo
+
+cliente
+
+↓
+
+stream
+
+↓
+
+media service
+
+↓
+
+minio
+
+↓
+
+chat
+
+---
+
+Objetivos
+
+evitar RAM
+
+throughput alto
+
+---
+
+# 19. CALL SERVICE
+
+Tecnologías:
+
+WebRTC
+
+Redis
+
+Socket.IO
+
+---
+
+Responsabilidades:
+
+Voice
+
+Video
+
+Screen Share
+
+Signaling
+
+---
+
+Features:
+
+Voice
+
+Video
+
+Mute
+
+Camera
+
+Reconnect
+
+---
+
+Eventos
+
+CALL_STARTED
+
+OFFER
+
+ANSWER
+
+ICE_CANDIDATE
+
+CALL_ENDED
+
+---
+
+Flujo
+
+usuario
+
+↓
+
+gateway
+
+↓
+
+call
+
+↓
+
+webrtc
+
+↓
+
+peer
+
+---
+
+# 20. NOTIFICATION SERVICE
+
+Tecnologías:
+
+RabbitMQ
+
+Redis
+
+---
+
+Responsabilidades:
+
+Push
+
+Alerts
+
+Sounds
+
+Missed Calls
+
+---
+
+Features
+
+Retry
+
+Queue
+
+Delivery
+
+Offline notifications
+
+---
+
+Eventos
+
+NOTIFICATION_CREATED
+
+CALL_MISSED
+
+MESSAGE_ALERT
+
+Fin PARTE 2
+
+# PARTE 3 — INFRAESTRUCTURA + ESCALABILIDAD + RESILIENCIA + ROADMAP
+
+# 21. REDIS — ARQUITECTURA COMPLETA
+
+Redis será el componente encargado de mantener estado ultrarrápido y sincronización realtime.
+
+Redis NO será persistencia principal.
+
+Persistencia principal:
+
+PostgreSQL
+
+---
+
+Responsabilidades Redis
+
+Presence
+
+PubSub
+
+Socket synchronization
+
+Typing indicators
+
+Realtime state
+
+Fast reads
+
+Heartbeats
+
+---
+
+Tecnologías
+
+Redis
+
+Redis Pub/Sub
+
+Redis Cluster (futuro)
+
+---
+
+Objetivos
+
+latencia mínima
+
+sincronización entre nodos
+
+estado compartido
+
+---
+
+Datos almacenados
+
+online:user:{id}
+
+socket:user:{id}
+
+typing:conversation:{id}
+
+last_seen:user:{id}
+
+call:room:{id}
+
+---
+
+Ejemplo Presence
+
+usuario conecta
+
+↓
+
+guardar socket
+
+↓
+
+emitir online
+
+↓
+
+sincronizar nodos
+
+---
+
+Ejemplo Socket Sync
+
+Socket Server 1
+
+↓
+
+Redis PubSub
+
+↓
+
+Socket Server 2
+
+↓
+
+usuario destino
+
+---
+
+Escalabilidad Redis
+
+Fase 1
+
+Single Redis
+
+↓
+
+Fase 2
+
+Redis Replica
+
+↓
+
+Fase 3
+
+Redis Cluster
+
+---
+
+# 22. RABBITMQ — ARQUITECTURA COMPLETA
+
+RabbitMQ será el sistema central de comunicación async.
+
+Objetivos:
+
+desacoplamiento
+
+retries
+
+durability
+
+event orchestration
+
+---
+
+Patrones
+
+Publisher Consumer
+
+Retry Queue
+
+Dead Letter Queue
+
+Fanout
+
+Topic Exchange
+
+---
+
+Eventos
+
+MESSAGE_SENT
+
+MESSAGE_DELIVERED
+
+MESSAGE_READ
+
+MESSAGE_RETRY
+
+USER_ONLINE
+
+USER_OFFLINE
+
+CALL_STARTED
+
+CALL_ENDED
+
+CALL_MISSED
+
+NOTIFICATION_CREATED
+
+---
+
+Flujo Mensajes
+
+chat
+
+↓
+
+rabbitmq
+
+↓
+
+consumers
+
+↓
+
+acciones
+
+---
+
+Ejemplo Retry
+
+mensaje falla
+
+↓
+
+retry queue
+
+↓
+
+espera
+
+↓
+
+reintento
+
+↓
+
+dead letter
+
+---
+
+Objetivos
+
+evitar dependencia directa
+
+buffer temporal
+
+recuperación
+
+---
+
+Escalabilidad
+
+Fase 1
+
+RabbitMQ único
+
+↓
+
+Fase 2
+
+quorum queues
+
+↓
+
+Fase 3
+
+cluster
+
+---
+
+# 23. POSTGRESQL — ARQUITECTURA
+
+PostgreSQL será la verdad absoluta.
+
+Responsabilidades:
+
+usuarios
+
+mensajes
+
+relaciones
+
+historial
+
+delivery
+
+---
+
+Técnicas
+
+Stored Procedures
+
+Functions
+
+Transactions
+
+Indexes
+
+Constraints
+
+Connection Pooling
+
+Query Optimization
+
+---
+
+Stored Procedures
+
+Auth
+
+create_user
+
+create_session
+
+block_user
+
+---
+
+Chat
+
+send_message
+
+retry_pending_messages
+
+mark_message_read
+
+create_conversation
+
+---
+
+Objetivos
+
+menos roundtrips
+
+lógica centralizada
+
+consistencia
+
+---
+
+Escalabilidad
+
+Fase 1
+
+Primary
+
+↓
+
+Fase 2
+
+Read Replicas
+
+↓
+
+Fase 3
+
+Sharding
+
+---
+
+# 24. KUBERNETES — ARQUITECTURA
+
+Objetivo
+
+orquestación
+
+escalabilidad
+
+alta disponibilidad
+
+self healing
+
+---
+
+Tecnologías
+
+Kubernetes
+
+Minikube
+
+kubectl
+
+---
+
+Recursos
+
+Deployments
+
+StatefulSets
+
+Services
+
+Ingress
+
+ConfigMaps
+
+Secrets
+
+HPA
+
+---
+
+Deployments
+
+api-gateway
+
+auth-service
+
+chat-service
+
+presence-service
+
+media-service
+
+call-service
+
+notification-service
+
+---
+
+StatefulSets
+
+postgres-auth
+
+postgres-chat
+
+redis
+
+rabbitmq
+
+minio
+
+---
+
+Services
+
+ClusterIP
+
+NodePort
+
+LoadBalancer
+
+---
+
+Objetivos
+
+rolling update
+
+restart automático
+
+descubrimiento servicios
+
+---
+
+# 25. DOCKER — ENTORNO LOCAL
+
+Objetivo
+
+desarrollo reproducible
+
+aislamiento
+
+consistencia
+
+---
+
+Cada servicio tendrá
+
+Dockerfile
+
+.env
+
+network
+
+healthcheck
+
+---
+
+Ejemplo
+
+frontend
+
+gateway
+
+auth
+
+chat
+
+presence
+
+media
+
+call
+
+notification
+
+postgres
+
+redis
+
+rabbitmq
+
+minio
+
+---
+
+Flujo local
+
+docker compose
+
+↓
+
+minikube
+
+↓
+
+kubectl
+
+---
+
+# 26. ESCALABILIDAD
+
+Escalabilidad horizontal.
+
+Servicios
+
+Chat x3
+
+Presence x2
+
+Call x2
+
+Gateway x2
+
+---
+
+Socket Sync
+
+redis
+
+↓
+
+broadcast
+
+↓
+
+usuario destino
+
+---
+
+Escalabilidad DB
+
+Primary
+
+↓
+
+Replica
+
+↓
+
+Cluster
+
+---
+
+Escalabilidad Storage
+
+MinIO
+
+↓
+
+Distributed
+
+---
+
+# 27. RESILIENCIA
+
+Objetivos
+
+recuperación automática
+
+graceful degradation
+
+retry
+
+---
+
+Escenarios
+
+Redis cae
+
+↓
+
+presencia degradada
+
+---
+
+Rabbit cae
+
+↓
+
+cola temporal
+
+↓
+
+replay
+
+---
+
+Postgres cae
+
+↓
+
+retry
+
+↓
+
+modo degradado
+
+---
+
+Socket cae
+
+↓
+
+reconnect
+
+↓
+
+sync
+
+---
+
+Objetivos
+
+cero pérdida
+
+recuperación
+
+continuidad
+
+---
+
+# 28. OBSERVABILIDAD
+
+Objetivo
+
+entender el sistema.
+
+---
+
+Tecnologías Futuras
+
+Prometheus
+
+Grafana
+
+OpenTelemetry
+
+Loki
+
+---
+
+Métricas
+
+CPU
+
+RAM
+
+latencia
+
+eventos
+
+colas
+
+websockets
+
+---
+
+Logs
+
+gateway
+
+auth
+
+chat
+
+presence
+
+call
+
+notification
+
+---
+
+Tracing
+
+request
+
+↓
+
+gateway
+
+↓
+
+service
+
+↓
+
+db
+
+---
+
+# 29. SEGURIDAD
+
+JWT
+
+Refresh Tokens
+
+bcrypt
+
+Rate Limit
+
+Helmet
+
+CORS
+
+Input Validation
+
+Sanitization
+
+---
+
+Seguridad futura
+
+2FA
+
+E2E Encryption
+
+Session Policies
+
+Device Management
+
+---
+
+# 30. ROADMAP
+
+V1
+
+Auth
+
+Chat
+
+Presence
+
+Redis
+
+---
+
+V2
+
+RabbitMQ
+
+Retry
+
+Unread
+
+---
+
+V3
+
+Uploads
+
+Streams
+
+Media
+
+---
+
+V4
+
+Calls
+
+WebRTC
+
+---
+
+V5
+
+Kubernetes
+
+Scaling
+
+Observability
+
+---
+
+V6
+
+Encryption
+
+Monitoring
+
+CI/CD
+
+---
+
+# 31. OBJETIVO FINAL
+
+Construir una plataforma realtime enterprise inspirada en MSN Messenger clásica.
+
+El proyecto servirá para practicar:
+
+Node.js Internals
+
+PostgreSQL
+
+Redis
+
+RabbitMQ
+
+Kubernetes
+
+Docker
+
+WebSockets
+
+WebRTC
+
+Sistemas Distribuidos
+
+Arquitectura Enterprise
+
+Escalabilidad
+
+Resiliencia
+
+Event Driven Architecture
+
+Realtime Systems
+
+
+FIN DOCUMENTO
+------WebKitFormBoundaryeBivEfLIENkM3Rq2--
