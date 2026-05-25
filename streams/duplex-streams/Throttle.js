@@ -1,6 +1,6 @@
 import { Duplex } from "stream";
 
-class Throttle extends Duplex {
+class Throttle extends Duplex { // por sr un stream duplex _write si puede usar push para publicar chunk en el buffer de lectura
     constructor(delay = 1) {
         super();
         this.delay = delay;
