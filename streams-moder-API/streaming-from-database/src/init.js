@@ -7,6 +7,7 @@ const db = new connection.Database("./data/db");
 const promisifiedSerialized = promisify(db.serialize.bind(db));
 const promisifiedRun = promisify(db.run.bind(db));
 
+
 function buildFakeUser() {
     const user = {
         name: faker.internet.username(),
@@ -16,17 +17,18 @@ function buildFakeUser() {
     return [user.name, user.age];
 }
 
-await promisifiedSerialized;
+function buildFakeData(fakedata, promisifiedExecuteQuery) {
+    const promises = [];
+    for (let i = 0; i < 100; i++) {
 
-await promisifiedRun("CREATE TABLE  users(name TEXT, age NUMBER)");
+        const user = fakedata();
+        promises.push(promisifiedExecuteQuery(`INSERT INTO users(name, age) values(${user.map(_ => "?").join(",")})`, user));
+    }
 
-const promises = [];
-
-for (let i = 0; i < 100; i++) {
-
-    const user = buildFakeUser();
-    promises.push(promisifiedRun(`INSERT INTO users(name, age) values(${user.map(_ => "?").join(",")})`, user));
+    return promises;
 }
 
-await Promise.all(promises);
+await promisifiedSerialized;
+await promisifiedRun("CREATE TABLE  users(name TEXT, age NUMBER)");
+await Promise.all(buildFakeData(buildFakeUser, promisifiedRun));
 
