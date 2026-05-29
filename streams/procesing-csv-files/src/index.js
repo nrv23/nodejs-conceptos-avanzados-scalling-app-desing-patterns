@@ -16,8 +16,10 @@ const filePath = path.join(__dirname, 'imd_movies.csv'); // genera la ruta del a
 const PORT = process.env.PORT || 5000;
 
 const allowedHeaders = {
-    'Access-Control-Allow-Origin': "*",
-    'Access-Control-Allow-Methods': "*",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization"
 };
 
 
@@ -61,6 +63,9 @@ function createTransformStream() {
 
 async function handleRequest(req, res) {
 
+    res.writeHead(200, allowedHeaders);
+
+
     if (req.method === "OPTIONS") {
         res.writeHead(204, allowedHeaders);
         res.end();
@@ -68,6 +73,9 @@ async function handleRequest(req, res) {
     const abortCOntroller = createAbortController(req);
 
     try {
+
+
+
         await Readable.toWeb(createReadStream(filePath, {
             encoding: 'utf-8'
         }))
@@ -77,7 +85,7 @@ async function handleRequest(req, res) {
                 signal: abortCOntroller.signal
             }) // leer el archivo y responder el endpoint usando writable streams
     } catch (err) {
-        console.log(err)
+        console.log({ err })
         if (err.name === 'AbortError') {
             console.log("Stream ended ");
         } else {
