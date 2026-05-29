@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { WritableStream, TransformStream } from 'node:stream/web';
 import { Readable, Transform } from 'node:stream';
 import csvtojson from 'csvtojson';
+import { setTimeout } from 'node:timers';
 
 
 const __filename = fileURLToPath(import.meta.url); // ruta del archivo
@@ -17,6 +18,18 @@ const PORT = process.env.PORT || 5000;
 const allowedHeaders = {
     'Access-Control-Allow-Origin': "*",
     'Access-Control-Allow-Methods': "*",
+};
+
+
+function createAbortController(req) {
+    const controller = new AbortController();
+    req.once("close", _ => {
+        console.log("Cliente disconnected...");
+        controller.abort();
+    });
+
+
+    return controller;
 }
 
 function createWritableWebStream(res) {
@@ -40,7 +53,7 @@ function createTransformStream() {
                 original_title: original_title.toUpperCase(),
                 original_language,
                 revenue
-            })
+            });
             controller.enqueue(newChunk.concat("\n"));
         }
     })
@@ -52,13 +65,27 @@ async function handleRequest(req, res) {
         res.writeHead(204, allowedHeaders);
         res.end();
     }
+    const abortCOntroller = createAbortController(req);
 
-    Readable.toWeb(createReadStream(filePath, {
-        encoding: 'utf-8'
-    }))
-        .pipeThrough(Transform.toWeb(csvtojson())) // csvtojson no es un webstream, se usa Transform.toWeb para convertir csvtojson a webStream 
-        .pipeThrough(createTransformStream())
-        .pipeTo(createWritableWebStream(res)); // leer el archivo y responder el endpoint usando writable streams
+    try {
+        await Readable.toWeb(createReadStream(filePath, {
+            encoding: 'utf-8'
+        }))
+            .pipeThrough(Transform.toWeb(csvtojson())) // csvtojson no es un webstream, se usa Transform.toWeb para convertir csvtojson a webStream 
+            .pipeThrough(createTransformStream())
+            .pipeTo(createWritableWebStream(res), {
+                signal: abortCOntroller.signal
+            }) // leer el archivo y responder el endpoint usando writable streams
+    } catch (err) {
+        console.log(err)
+        if (err.name === 'AbortError') {
+            console.log("Stream ended ");
+        } else {
+            console.log("Error was ocurred");
+            res.statusCode = 500;
+            res.end("Internal server error");
+        }
+    }
 };
 
 createServer(handleRequest)
