@@ -5,7 +5,10 @@ let abortController = new AbortController();
 
 const start = document.getElementById('start');
 const stopbtn = document.getElementById('stop');
+const resume = document.getElementById('resume');
 const cards = document.getElementById('cards');
+
+let currentOffset = 0;
 
 function parseChnunk() {
     let buffer = "";
@@ -18,6 +21,7 @@ function parseChnunk() {
             for (const line of lines) {
 
                 try {
+
                     controller.enqueue(JSON.parse(line));
                 } catch (error) {
                     console.error("Failed to parse JSON data", error, line);
@@ -46,10 +50,22 @@ async function consumeWebStreamsAPI(signal) {
     return readerObj;
 }
 
+
+async function resumeStreams(signal) {
+    const response = await fetch(
+        `${URL}?offset=${currentOffset}`,
+        { signal });
+
+    const readerObj = response.body
+        .pipeThrough(new TextDecoderStream())
+        .pipeThrough(parseChnunk())
+    return readerObj;
+}
+
 function displayData(element) {
     return new WritableStream({
         write({ poster_path, original_title, revenue }) {
-
+            currentOffset++;
             const article = `
             <article>
                 <div class="text">
@@ -98,4 +114,10 @@ start.addEventListener('click', async e => {
 stopbtn.addEventListener('click', e => {
     abortController.abort();
     abortController = new AbortController();
+});
+
+resume.addEventListener("click", async e => {
+    console.log({ currentOffset });
+    const readableStream = await resumeStreams(abortController.signal);
+    readableStream.pipeTo(displayData(cards));
 });

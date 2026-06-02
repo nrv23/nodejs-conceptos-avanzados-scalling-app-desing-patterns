@@ -22,6 +22,26 @@ const allowedHeaders = {
     "Access-Control-Allow-Headers": "Content-Type, Authorization"
 };
 
+function createSkipTransform(offset) {
+
+    let currentRow = 0;
+
+    return new TransformStream({
+
+        transform(chunk, controller) {
+
+            console.log({ chunk });
+
+            currentRow++;
+
+            if (currentRow <= offset) {
+                return; // ignora hasta que se posicione en offset 
+            }
+
+            controller.enqueue(chunk);
+        }
+    });
+}
 
 function createAbortController(req) {
     const controller = new AbortController();
@@ -65,21 +85,26 @@ async function handleRequest(req, res) {
 
     res.writeHead(200, allowedHeaders);
 
-
     if (req.method === "OPTIONS") {
         res.writeHead(204, allowedHeaders);
         res.end();
     }
+
     const abortCOntroller = createAbortController(req);
 
     try {
 
+        const url = new URL(req.url, `http://${req.headers.host}`);
+        const offset = Number(url.searchParams.get('offset') ?? 0);
 
+        console.log({ offset });
 
         await Readable.toWeb(createReadStream(filePath, {
             encoding: 'utf-8'
         }))
+
             .pipeThrough(Transform.toWeb(csvtojson())) // csvtojson no es un webstream, se usa Transform.toWeb para convertir csvtojson a webStream 
+            .pipeThrough(createSkipTransform(offset))
             .pipeThrough(createTransformStream())
             .pipeTo(createWritableWebStream(res), {
                 signal: abortCOntroller.signal
