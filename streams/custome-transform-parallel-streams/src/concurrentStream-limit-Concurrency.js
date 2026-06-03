@@ -40,7 +40,7 @@ export class ConcurrentStreamLimitConcurrency extends Transform {
             this.#countConcurrentTasks++;
             // logs de informacion
             console.log('ejecutando chunk concurrent');
-            // console.log({ countConcurrentTasks: this.#countConcurrentTasks })
+
             // ---------------------------------------
             this.#currentTask = chunk;
             this.#running.push(currentChunk);
@@ -52,7 +52,7 @@ export class ConcurrentStreamLimitConcurrency extends Transform {
         } else {
             console.log('guardar tarea pendiente');
             this.#countConcurrentTasks = 0;
-            // console.log({ countConcurrentTasks: this.#countConcurrentTasks })
+            console.log({ countConcurrentTasks: this.#countConcurrentTasks })
             this.#pending.push({
                 chunk: chunk,
                 enc,
@@ -63,7 +63,7 @@ export class ConcurrentStreamLimitConcurrency extends Transform {
         }
     }
     _flush(callback) {
-        if (this.#activeTasks > 0) {
+        if (this.#running.length || this.#pending.length) {
             this.#finalizeCallback = callback;
         } else {
             callback();
@@ -113,7 +113,7 @@ export class ConcurrentStreamLimitConcurrency extends Transform {
             nextTask.callback();
         }
 
-        if (this.#activeTasks === 0 && this.#finalizeCallback) {
+        if ((!this.#running.length && !this.#pending.length) && this.#finalizeCallback) {
             this.#finalizeCallback();
         }
     }
