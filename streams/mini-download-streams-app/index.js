@@ -2,9 +2,30 @@ import { createServer } from 'node:http';
 import { createReadStream, stat } from 'node:fs';
 import { promisify } from 'node:util';
 
-const fileName = './the-universe.mp4';
+const fileName = './Clase01.mp4';
+const allowedHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, Range",
+    "Access-Control-Expose-Headers": "Content-Range, Content-Length, Accept-Ranges"
+};
+
 const fileInfo = promisify(stat); // promisify convierte metodos de callback return a promise return
 createServer(async (req, res) => {
+
+    // setear cabeceras para cors
+    for (const [key, value] of Object.entries(allowedHeaders)) {
+        res.setHeader(key, value);
+    }
+
+    if (req.method === "OPTIONS") {
+        res.writeHead(204, allowedHeaders);
+        res.end();
+    }
+
+
+    console.log("Entro a solicitud")
+
     // recordar que Response es un tipo de stream writable
     // express y nodejs se basan en streams y en event emitter
     const { size } = await fileInfo(fileName); // tamño en bytes
@@ -17,6 +38,11 @@ createServer(async (req, res) => {
     let streams;
     console.log("range request...")
     if (range) {
+
+        console.log({
+            range,
+            size
+        });
         const [start, end] = range.replace(/bytes=/, '').split('-');// intervalo en bytes
 
         const startByte = parseInt(start, 10);
@@ -32,7 +58,8 @@ createServer(async (req, res) => {
 
         streams = createReadStream(fileName, {
             start: startByte,
-            end: endByte
+            end: endByte,
+            highWaterMark: 16 * 1024 // 16 KB tamaño maximo de chunk
         })
         streams.pipe(res)
         streams.on("error", console.error);
@@ -42,7 +69,9 @@ createServer(async (req, res) => {
     } else {
 
         res.writeHead(200, { "Content-Type": "video/mp4", "Content-Length": size }); // setear el tipo de contenido de respesta
-        streams = createReadStream(fileName)
+        streams = createReadStream(fileName, {
+            highWaterMark: 16 * 1024 // 16 KB tamaño maximo de chunk
+        })
         streams.pipe(res)
         streams.on("error", console.error);
     }
@@ -51,6 +80,21 @@ createServer(async (req, res) => {
         if (!streams.destroyed) {
             console.log("Cliente desconectado");
             streams.destroy(); // se destruye el stream si se cierra la conexion
+        }
+    });
+
+
+    streams.on('data', chunk => {
+
+        const canContinue = res.write(chunk);
+
+        if (!canContinue) {
+
+            streams.pause();
+
+            res.on('drain', () => {
+                streams.resume();
+            });
         }
     });
 

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Downloader con Range Requests</title>
+
+    <link rel="stylesheet" href="./styles.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2>Demo Descarga con Streams</h2>
+
+        <button id="downloadBtn">Descargar</button>
+        <button id="pauseBtn">Pausar</button>
+        <button id="resumeBtn">Reanudar</button>
+
+        <div class="progress-container">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="info">
+            <p>Total bytes: <span id="total">0</span></p>
+            <p>Descargados: <span id="downloaded">0</span></p>
+            <p>Progreso: <span id="percentage">0</span>%</p>
+        </div>
+
+    </div>
+
+    <script src="./app.js"></script>
+
+</body>
+
+</html>
