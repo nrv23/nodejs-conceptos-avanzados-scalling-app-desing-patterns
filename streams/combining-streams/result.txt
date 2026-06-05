@@ -1,0 +1,6 @@
+{"name":"Bob","age":"35","city":"Los Angeles"}
+{"name":"Charlie","age":"30","city":"Chicago"}
+{"name":"Eve","age":"40","city":"Boston"}
+{"name":"Grace","age":"33","city":"Seattle"}
+{"name":"Ivan","age":"45","city":"Miami"}
+{"name":"Judy","age":"31","city":"Atlanta"}
