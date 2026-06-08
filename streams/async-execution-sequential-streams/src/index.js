@@ -35,7 +35,7 @@ function myTransform(resultFile, isTheFirstLineInFirstFile) {
 
             src.once('end', _ => {
 
-                firstFile = false;
+                isTheFirstLineInFirstFile = false;
                 cb();
             });
 
