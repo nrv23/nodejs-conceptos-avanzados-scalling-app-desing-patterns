@@ -1,0 +1,22 @@
+{
+  "name": "sqlite-sharding-api",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.4.0",
+      "onFail": "download"
+    }
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "node-localstorage": "^3.0.5"
+  }
+}

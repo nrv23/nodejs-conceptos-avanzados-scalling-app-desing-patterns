@@ -21,3 +21,7 @@ metodos:
 resume: flujo automático
 read: consumo manual/controlado
 pause: pusar el consumo de chunks
+
+
+pwd | xclip -selection clipboard -- copia el actual pwd, solo funciona en linux
+pnpm exec pm2 --version -- ejecutar pm2 con pnpm
