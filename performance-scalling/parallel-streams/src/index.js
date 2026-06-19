@@ -73,6 +73,10 @@ function childProcessToStream(cp, file) {
         if (fullPathProcess) stream.push(JSON.stringify({ pid: cp.pid, file: fullPathProcess, message, status }).concat('\n'));
     });
 
+    cp.once("exit", () => {
+        stream.push(null);
+    });
+
     cp.send(file);
 
     return stream;
